@@ -224,10 +224,13 @@ def get_inherited_tag_type(root_node, target_node):
     :rtype: str|None
     """
     _, parent_tag, _ = get_parent_etree_node(root_node, target_node)
-    # Checks if the last part of the xpath expression is a tag name and returns it
-    # If not (eg. if the pattern is for example expr="//field[@name='...']/.."), return None
-    if matches := re.findall("^.*/(\w+)[^/]*?$", parent_tag.get('expr')):
-        return matches[0]
+    if expr := parent_tag.get('expr'):
+        # Checks if the last part of the xpath expression is a tag name and returns it
+        # If not (eg. if the pattern is for example expr="//field[@name='...']/.."), return None
+        if matches := re.findall("^.*/(\w+)[^/]*?$", expr):
+            return matches[0]
+    else:
+        return parent_tag.tag
 
 
 def get_combined_invisible_condition(existing_invisible_condition, states_string):
@@ -466,9 +469,10 @@ for xml_file in all_xml_files:
                     attribute_tag_invisible.tail = tail
                     parent_tag.insert(tag_index, attribute_tag_invisible)
 
-                parent_tag.remove(attribute_tag_states)
+                # TODO: account for attributes without value
                 invisible_condition = get_combined_invisible_condition(attribute_tag_invisible.text,
                                                                        attribute_tag_states.text)
+                parent_tag.remove(attribute_tag_states)
                 attribute_tag_invisible.text = invisible_condition
                 attribute_tags_with_states_after.append(attribute_tag_invisible)
 
@@ -489,6 +493,7 @@ for xml_file in all_xml_files:
                     ok_files.append(xml_file)
     except Exception as e:
         nok_files.append((xml_file, e))
+        raise e
 
 
 print('\n################################################')
