@@ -372,7 +372,7 @@ for xml_file in all_xml_files:
                             # to a separate attribute would actually override any states attributes in parent views as well.
                             # Since we can't automatically check the inheritance tree to account for this, a TODO is added
                             todo_tag = etree.Comment(
-                                f"TODO: Result from 'attrs' -> 'invisible' conversion without also overriding 'states' attribute"
+                                f"TODO (migration): Result from 'attrs' -> 'invisible' conversion without also overriding 'states' attribute"
                                 f"{indent + (' ' * 5)}Check if this {tag_type + ' ' if tag_type else ''}tag contained a states attribute in any of the parent views, in which case it should be combined into this 'invisible' attribute"
                                 f"{indent + (' ' * 5)}(If any states attributes existed in parent views, they'll also be marked with a TODO)")
                             todo_tag.tail = indent
@@ -401,7 +401,7 @@ for xml_file in all_xml_files:
                     # if attribute_tag_inherits_field(doc, attribute_tag):
                     if tag_type == 'field':
                         new_tag = etree.Comment(
-                            f"TODO: Result from converting 'attrs' attribute override without options for {missing_attrs} to separate attributes"
+                            f"TODO (migration): Result from converting 'attrs' attribute override without options for {missing_attrs} to separate attributes"
                             f"{indent + (' ' * 5)}Remove redundant empty tags below for any of those attributes that are not present in the field tag in any of the parent views"
                             f"{indent + (' ' * 5)}If someone later adds one of these attributes in the parent views, they would likely be unaware it's still overridden in this view, resulting in unexpected behaviour, which should be avoided")
                         new_tag.tail = indent
@@ -429,7 +429,7 @@ for xml_file in all_xml_files:
                                 # to a separate attribute would actually override any states attributes in parent views as well.
                                 # Since we can't automatically check the inheritance tree to account for this, a TODO is added
                                 todo_tag = etree.Comment(
-                                    f"TODO: Result from 'attrs' -> 'invisible' conversion without also overriding 'states' attribute"
+                                    f"TODO (migration): Result from 'attrs' -> 'invisible' conversion without also overriding 'states' attribute"
                                     f"{indent + (' ' * 5)}Check if this {tag_type + ' ' if tag_type else ''}tag contained a states attribute in any of the parent views, that should be combined into this 'invisible' attribute"
                                     f"{indent + (' ' * 5)}(If any states attributes existed in parent views, they'll also be marked with a TODO)")
                                 todo_tag.tail = indent
@@ -468,7 +468,7 @@ for xml_file in all_xml_files:
                 else:
                     conversion_action_string = f"Result from converting \"states='{states_attribute}'\" attribute into an 'invisible' attribute"
                 todo_tag = etree.Comment(
-                    f"TODO: {conversion_action_string}"
+                    f"TODO (migration): {conversion_action_string}"
                     f"{indent + (' ' * 5)}Manually combine states condition into any 'invisible' overrides in inheriting views as well")
                 todo_tag.tail = indent
                 parent_tag.insert(tag_index, todo_tag)
@@ -511,7 +511,7 @@ for xml_file in all_xml_files:
                     # to an invisible attribute would actually override any invisible attributes in parent views as well.
                     # Since we can't automatically check the inheritance tree to account for this, a TODO is added
                     todo_tag = etree.Comment(
-                        f"TODO: Result from \"states='{states_attribute}'\" -> 'invisible' conversion without also overriding 'attrs' attribute"
+                        f"TODO (migration): Result from \"states='{states_attribute}'\" -> 'invisible' conversion without also overriding 'attrs' attribute"
                         f"{indent + (' ' * 5)}Check if this {tag_type + ' ' if tag_type else ''}tag contains an invisible attribute in any of the parent views, in which case it should be combined into this new 'invisible' attribute"
                         f"{indent + (' ' * 5)}(Only applies to invisible attributes in the parent views that were not originally states attributes. Those from converted states attributes will be marked with a TODO)")
                     todo_tag.tail = indent
